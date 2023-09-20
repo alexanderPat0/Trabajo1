@@ -1,11 +1,12 @@
 package paquete;
 
 public class Persona {
-	
+
 	private String dni, sexo, nombre, apellidos, estadoCivil, hijos;
 	private int edad, numHijos;
-	
-	public Persona(String dni, String sexo, String nombre, String apellidos, int edad, String estadoCivil, String hijos,  int numHijos) {
+
+	public Persona(String dni, String sexo, String nombre, String apellidos, int edad, String estadoCivil, String hijos,
+			int numHijos) {
 		super();
 		this.dni = dni;
 		this.sexo = sexo;
@@ -14,8 +15,8 @@ public class Persona {
 		this.edad = edad;
 		this.estadoCivil = estadoCivil;
 		this.numHijos = numHijos;
-		this.hijos  = hijos;
-	
+		this.hijos = hijos;
+
 	}
 
 	public Persona(String dni, String sexo, String nombre, String apellidos, int edad) {
@@ -29,7 +30,7 @@ public class Persona {
 		this.hijos = "No";
 		this.numHijos = 0;
 	}
-	
+
 	public Persona() {
 		super();
 	}
@@ -90,7 +91,7 @@ public class Persona {
 		this.numHijos = numHijos;
 	}
 
-	public String isHijos() {
+	public String getHijos() {
 		return hijos;
 	}
 
@@ -101,10 +102,8 @@ public class Persona {
 	@Override
 	public String toString() {
 		return "Persona [dni=" + dni + ", sexo=" + sexo + ", nombre=" + nombre + ", apellidos=" + apellidos
-				+ ", estado civil: " + estadoCivil + ", edad: " + edad + ", numero de hijos: " + numHijos + 
-				", hijos:" + hijos + "]";
+				+ ", estado civil: " + estadoCivil + ", edad: " + edad + ", numero de hijos: " + numHijos + ", hijos:"
+				+ hijos + "]";
 	}
-	
-	
-	
+
 }
