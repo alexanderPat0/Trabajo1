@@ -2,31 +2,20 @@ package paquete;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JButton;
 
 public class Frame1 extends JFrame {
 
 	private JPanel contentPane;
 	private JButton btnCrearEntidad, btnVerEntidad;
 	private JLabel label1;
-
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					Frame1 frame = new Frame1();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
 	public Frame1() {
 		setVisible(true);
@@ -55,6 +44,19 @@ public class Frame1 extends JFrame {
 		ManejadorBoton manejador = new ManejadorBoton();
 		btnCrearEntidad.addActionListener(manejador);
 		btnVerEntidad.addActionListener(manejador);
+
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent we) {
+				OperacionFichero.escribirTexto(Test.listMayor, "Mayores");
+				OperacionFichero.escribirTexto(Test.listMenor, "Menores");
+				OperacionFichero.escribirTexto(Test.listSoltero, "SinPareja");
+				OperacionFichero.escribirTexto(Test.listCasado, "Casados");
+				OperacionFichero.escribirTexto(Test.listViudo, "Viudos");
+
+				OperacionFichero.escribirBinario(Test.listado);
+				System.exit(0);
+			}
+		});
 	}
 
 	private class ManejadorBoton implements ActionListener {

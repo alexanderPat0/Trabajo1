@@ -1,0 +1,3 @@
+12345678A;M;Alejandro;Rodriguez Fenix;18;Sin pareja;No;0
+22222222B;M;Ana;Bbbbb Bbbbbbb;30;Sin pareja;No;0
+33333333C;M;Antonio;Ccccc Cccccc;60;Viudo;Si;3

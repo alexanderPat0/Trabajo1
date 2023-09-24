@@ -1,6 +1,8 @@
 package paquete;
 
-public class Persona {
+import java.io.Serializable;
+
+public class Persona implements Serializable {
 
 	private String dni, sexo, nombre, apellidos, estadoCivil, hijos;
 	private int edad, numHijos;
@@ -17,18 +19,6 @@ public class Persona {
 		this.numHijos = numHijos;
 		this.hijos = hijos;
 
-	}
-
-	public Persona(String dni, String sexo, String nombre, String apellidos, int edad) {
-		super();
-		this.dni = dni;
-		this.sexo = sexo;
-		this.nombre = nombre;
-		this.apellidos = apellidos;
-		this.edad = edad;
-		this.estadoCivil = "Sin pareja";
-		this.hijos = "No";
-		this.numHijos = 0;
 	}
 
 	public Persona() {
@@ -101,9 +91,9 @@ public class Persona {
 
 	@Override
 	public String toString() {
-		return "Persona [dni=" + dni + ", sexo=" + sexo + ", nombre=" + nombre + ", apellidos=" + apellidos
-				+ ", estado civil: " + estadoCivil + ", edad: " + edad + ", numero de hijos: " + numHijos + ", hijos:"
-				+ hijos + "]";
+		return "Dni: " + dni + ", sexo: " + sexo + ", nombre: " + nombre + ", apellidos: " + apellidos
+				+ ", estado civil: " + estadoCivil + ", edad: " + edad + ", hijos: " + hijos + ", numero de hijos: "
+				+ numHijos;
 	}
 
 }

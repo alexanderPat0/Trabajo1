@@ -13,9 +13,9 @@ import java.util.List;
 
 public class OperacionFichero {
 
-	public void escribirBinario(List<Persona> listado) {
+	public static void escribirBinario(List<Persona> listado) {
 		try {
-			FileOutputStream fos = new FileOutputStream("ficheros/fichBinario");
+			FileOutputStream fos = new FileOutputStream("ficheros/fichBinario.dat");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(listado);
 			oos.close();
@@ -24,64 +24,59 @@ public class OperacionFichero {
 		}
 	}
 
-	public void leerBinario(List<Persona> listado) {
+	public static List<Persona> leerBinario(List<Persona> listado) {
 		ObjectInputStream ois;
 		try {
-			ois = new ObjectInputStream(new FileInputStream("ficheros/fichBinario"));
+			ois = new ObjectInputStream(new FileInputStream("ficheros/fichBinario.dat"));
 			listado = (List<Persona>) ois.readObject();
 			ois.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return listado;
 	}
 
-	public void escribirTexto(List<Persona> listado) {
-
+	public static void escribirTexto(List<Persona> listado, String ruta) {
 		try {
-			FileWriter fw = new FileWriter("ficheros/");
+			FileWriter fw = new FileWriter("ficheros/fichTxt" + ruta + ".txt");
 
 			for (Persona p : listado) {
 				String datos = p.getDni() + ";" + p.getSexo() + ";" + p.getNombre() + ";" + p.getApellidos() + ";"
-						+ p.getEdad() + ";" + p.getEstadoCivil() +";"+ p.getHijos() +";"+ p.getNumHijos() + "\n";
+						+ p.getEdad() + ";" + p.getEstadoCivil() + ";" + p.getHijos() + ";" + p.getNumHijos() + "\n";
 				fw.write(datos);
 			}
 			fw.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
-//	public void leerTexto(List<Agrupacion> aT) {
-//		try {
-//			BufferedReader br = new BufferedReader(new FileReader("docT/agrupaciones"));
-//			String nom = br.readLine();
-//
-//			while (nom != null) {
-//				String[] cad = nom.split(";");
-//				String nomb = cad[0];
-//				String aut = cad[1];
-//				String cat = cad[2];
-//				int anyo = Integer.parseInt(cad[3]);
-//				int pos = Integer.parseInt(cad[4]);
-//				Test.aT.add(new Agrupacion(nomb, aut, cat, anyo, pos));
-//				nom = br.readLine();
-//
-//			}
-//			br.close();
-//		} catch (Exception e) {
-//
-//			e.printStackTrace();
-//		}
-//
-//	}
+	public static void leerTexto(List<Persona> listaTexto, String ruta) {
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("ficheros/fichTxt"+ruta+".txt"));
+			String persona = br.readLine();
 
-	public void anadirPersona(Persona p) {
+			while (persona != null) {
+				String[] cad = persona.split(";");
+				String dni = cad[0];
+				String sexo = cad[1];
+				String nombre = cad[2];
+				String apellidos = cad[3];
+				int edad = Integer.parseInt(cad[4]);
+				String estadoCivil = cad[5];
+				String hijos = cad[6];
+				int numHijos = Integer.parseInt(cad[7]);
+				Persona p = new Persona(dni, sexo, nombre, apellidos, edad, estadoCivil, hijos, numHijos);
+				listaTexto.add(p);
+				persona = br.readLine();
+			}
+			br.close();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
 
 	}
 

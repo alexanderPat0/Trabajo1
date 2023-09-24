@@ -2,6 +2,8 @@ package paquete;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +29,6 @@ public class CrearEntidad extends JFrame {
 	private String[] comboBox_Sexos = { "M", "F" };
 	private String[] comboBox_Hijos = { "No", "Si" };
 	private String[] comboBox_EstadosCiviles = { "Sin pareja", "Casado", "Viudo" };
-
-	private static List<Persona> listadoPersonas = new ArrayList<>();
 
 	public CrearEntidad() {
 		setVisible(true);
@@ -124,7 +124,22 @@ public class CrearEntidad extends JFrame {
 		btnAceptar.addActionListener(manejador);
 		btnCancelar.addActionListener(manejador);
 
-		// Si la persona es menor de edad, se asume que no tiene pareja ni hijos.
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent we) {
+				OperacionFichero.escribirTexto(Test.listMayor, "Mayores");
+				OperacionFichero.escribirTexto(Test.listMenor, "Menores");
+				OperacionFichero.escribirTexto(Test.listSoltero, "SinPareja");
+				OperacionFichero.escribirTexto(Test.listCasado, "Casados");
+				OperacionFichero.escribirTexto(Test.listViudo, "Viudos");
+
+				OperacionFichero.escribirBinario(Test.listado);
+				System.exit(0);
+			}
+		});
+
+		// Si la persona es menor de edad, se asume que no tiene pareja ni hijos
+		// y se bloquean los componentes relacionados con ello.
+
 		txt_Edad.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
@@ -169,9 +184,9 @@ public class CrearEntidad extends JFrame {
 				// Crear una variable boolean que compruebe que todo está en orden. Si no lo
 				// está, que salga un JPanel que indique error y vuelva a la
 				// pantalla de creación de persona sin borrar los datos que ya estaban escritos.
-
-				OperacionFichero of = new OperacionFichero();
-//				listadoPersonas = of.LeerBinario();
+				
+				//El método 'todoCorrecto' es el que uso para ello.
+				
 				try {
 
 					String dniPersona = txt_Dni.getText();
@@ -184,14 +199,27 @@ public class CrearEntidad extends JFrame {
 					String tieneHijos = (String) comboBox_Hijo.getSelectedItem();
 
 					if (todoCorrecto(dniPersona, sexo, nombre, apellidos, estadoCiv, edad, numHijos, tieneHijos)) {
-						if (edad < 18)
-							p = new Persona(dniPersona, sexo, nombre, apellidos, edad);
+						
+						//Añado la persona a la lista general.
+						p = new Persona(dniPersona, sexo, nombre, apellidos, edad, estadoCiv, tieneHijos, numHijos);
+						Test.listado.add(p);
+						
+						//Añado a las personas a las listas en las que cumplan los requisitos.
+						if (p.getEdad() < 18)
+							Test.listMenor.add(p);
 						else
-							p = new Persona(dniPersona, sexo, nombre, apellidos, edad, estadoCiv, tieneHijos, numHijos);
+							Test.listMayor.add(p);
+						if (p.getEstadoCivil().matches("Sin pareja"))
+							Test.listSoltero.add(p);
+						else if (p.getEstadoCivil().matches("Casado"))
+							Test.listCasado.add(p);
+						else
+							Test.listViudo.add(p);
 
 						JOptionPane.showMessageDialog(null, "Persona añadida al registro.", "Success",
 								JOptionPane.INFORMATION_MESSAGE);
 					} else
+						
 						JOptionPane.showMessageDialog(null, "Se ha introducido algún dato erróneo.", "Error",
 								JOptionPane.ERROR_MESSAGE);
 
@@ -200,6 +228,10 @@ public class CrearEntidad extends JFrame {
 					JOptionPane.showMessageDialog(null, "Faltan datos por rellenar.", "Error",
 							JOptionPane.ERROR_MESSAGE);
 
+				}
+				
+				for (Persona p : Test.listado) {
+					System.out.println(p);
 				}
 
 			} else if (e.getSource() == btnCancelar) {
@@ -213,7 +245,7 @@ public class CrearEntidad extends JFrame {
 				int edad, int numHijos, String tieneHijos) {
 			if (!dniPersona.matches("\\d{8}[A-NO-Z]") || !nombre.matches("[a-zA-Z]+")
 					|| !apellidos.matches("[a-zA-Z\\s]+") || edad <= 0 || numHijos < 0
-					|| (tieneHijos.matches("Si") && numHijos == 0))
+					|| (tieneHijos.matches("Si") && numHijos == 0) || (tieneHijos.matches("No") && numHijos > 0))
 				return false;
 			return true;
 
